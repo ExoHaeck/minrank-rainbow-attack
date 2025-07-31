@@ -17,18 +17,13 @@ La clave pública de Rainbow expone polinomios cuadráticos que cumplen una estr
 
 El atacante busca una combinación:
 
-$$
-C = \sum_{i=1}^{m} \alpha_i M_i \quad \text{con } \operatorname{rank}(C) \leq r
-$$
+C = ∑ᵢ=1^m αᵢ Mᵢ   con rank(C) <= r
 
-Donde cada $M_i$ es una matriz cuadrática que representa un polinomio de la clave pública.
+Donde cada Mᵢ es una matriz cuadrática que representa un polinomio de la clave pública.
 
 Una vez encontrada esta combinación, se pueden falsificar firmas resolviendo:
 
-$$
-P_i(x) = 0 \quad \forall i \in [1, m]
-$$
-
+Pᵢ(x) = 0   ∀ i ∈ [1, m]
 
 ---
 
@@ -82,4 +77,10 @@ sage attack/verify_signature.py
 
 # 📌 Créditos
 
-Desarrollado por Mauro Carrillo (@Pr00fOf3xpl0it) como parte de sus laboratorios avanzados de criptoanálisis post-cuántico ofensivo.
+Desarrollado por Mauro Carrillo ([@Pr00fOf3xpl0it](https://github.com/ExoHaeck)) como parte de sus laboratorios avanzados de criptoanálisis post-cuántico ofensivo.
+
+🔗 Sígueme en redes:  
+- 🌐 [https://www.hacksyndicate.xyz](https://www.hacksyndicate.xyz)   
+- 💻 [Linkedin](https://www.linkedin.com/in/mauro-carrillo-7a326a208)  
+- 🎥 [YouTube](https://www.youtube.com/@Agrawain)
+- 🎯 [Blog](https://3xploit666.com/blockchain)
