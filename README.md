@@ -5,13 +5,13 @@ Este laboratorio está enfocado en el criptoanálisis y explotación de un esque
 
 ---
 
-## 🧬 ¿Qué es un esquema de firma Rainbow?
+## ¿Qué es un esquema de firma Rainbow?
 
 Rainbow es un esquema de firma post-cuántico multivariado basado en el problema de resolver sistemas de polinomios cuadráticos sobre campos finitos, típicamente $\mathbb{F}_2$. La idea básica se apoya en la dificultad de resolver sistemas de ecuaciones cuadráticas multivariadas (**MQ Problem**), considerado NP-difícil incluso para computadoras cuánticas.
 
 ---
 
-## 🔐 ¿Por qué es vulnerable?
+## ¿Por qué es vulnerable?
 
 La clave pública de Rainbow expone polinomios cuadráticos que cumplen una estructura especial: están construidos a partir de una matriz central cuya combinación lineal puede tener rango reducido. Esto permite aplicar un **ataque MinRank**, que busca una combinación de matrices cuadráticas tal que su rango sea menor o igual a un umbral definido.
 
@@ -32,7 +32,7 @@ $$
 
 ---
 
-# 📁 Estructura del proyecto
+# Estructura del proyecto
 
 ```
 minrank-lab/
@@ -49,7 +49,7 @@ minrank-lab/
 
 ---
 
-# 🧪 Pasos del laboratorio
+# Pasos del laboratorio
 
 ### 1. Generar una instancia vulnerable
 Ejecuta el script principal que genera la clave pública y realiza el ataque MinRank:
