@@ -49,7 +49,8 @@ minrank-lab/
 # Pasos del laboratorio
 
 ### 1. Generar una instancia vulnerable
-Ejecuta el script principal que genera la clave pública y realiza el ataque MinRank:
+Ejecuta el script principal que genera la clave pública y lanza el ataque MinRank.
+Recuerda completar la función `def minrank_attack(matrices)`: para realizar correctamente el ataque.
 
 ```
 sage lab.py
