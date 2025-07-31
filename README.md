@@ -1,4 +1,6 @@
 
+<img width="1536" height="1024" alt="ChatGPT Image 31 jul 2025, 06_31_24 p m" src="https://github.com/user-attachments/assets/ca237b58-68d6-41a8-8869-54795f0812c7" />
+
 # Laboratorio MinRank: Ataque a un "Rainbow" Reducido
 
 Este laboratorio está enfocado en el criptoanálisis y explotación de un esquema de firma multivariada simplificado (Rainbow reducido) utilizando un ataque **MinRank** sobre $\mathbb{F}_2$. A lo largo del ejercicio, se construye el esquema vulnerable y se demuestra cómo comprometer su integridad mediante la falsificación de firmas válidas.
