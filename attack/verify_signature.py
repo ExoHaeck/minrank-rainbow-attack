@@ -1,64 +1,93 @@
-# attack/reconstructor.py
+# attack/verify_signature.py
 
-import os
-import pickle
-from sage.all import *
+import sys, os, pickle
+from sage.all import GF
 
-def load_public_polys(path="keys/rainbow_public_key.pkl"):
-    print("[*] Cargando polinomios centrales...")
+# ──────────────────────────────────────────────────────────────────────────────
+# 1) Aseguramos importar desde la raíz del proyecto
+# ──────────────────────────────────────────────────────────────────────────────
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 2) Cargamos el loader de polinomios
+# ──────────────────────────────────────────────────────────────────────────────
+from attack.reconstructor import load_public_polys
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 3) Ruta de la firma falsificada
+# ──────────────────────────────────────────────────────────────────────────────
+SIG_PATH = os.path.join(ROOT, "keys", "forged", "forged_signature.pkl")
+
+def load_forged_signature(path=SIG_PATH):
     if not os.path.exists(path):
-        print(f"[-] Archivo no encontrado: {path}")
-        return []
+        print(f"[-] No se encontró la firma falsificada en: {path}")
+        sys.exit(1)
     with open(path, "rb") as f:
-        polys = pickle.load(f)
-    print(f"[✓] {len(polys)} polinomios cargados.")
-    return polys
+        sig = pickle.load(f)
+    print(f"[✓] Firma cargada (raw): {sig} (type={type(sig)})")
+    return sig
 
-def poly_to_matrix(poly, num_vars):
+def signature_to_list(x):
     """
-    Convierte un polinomio cuadrático en su matriz simétrica en GF(2).
-    Solo considera monomios de grado EXACTO 2.
+    Convierte x (tupla, lista o Sage vector) en lista de ints de Python.
     """
-    mat = Matrix(GF(2), num_vars, num_vars, 0)
+    # Si ya es tuple/list
+    if isinstance(x, (tuple, list)):
+        return [int(v) for v in x]
+    # Si tiene método .list()
+    if hasattr(x, "list"):
+        try:
+            return [int(v) for v in x.list()]
+        except Exception:
+            pass
+    # Intentamos iterar
+    try:
+        return [int(v) for v in x]
+    except Exception as e:
+        raise ValueError(f"No pude convertir la firma a lista de enteros: {e}")
 
-    for exp_tuple, coeff in poly.dict().items():
-        c = int(coeff)
-        if c == 0:
+def verify_signature(polys, x):
+    try:
+        x_list = signature_to_list(x)
+    except ValueError as e:
+        print(f"[!] {e}")
+        return False
+
+    print(f"[✓] Firma como lista de ints: {x_list}")
+
+    valid = True
+    for idx, poly in enumerate(polys, start=1):
+        if poly is None:
+            print(f"[!] Polinomio P{idx} es None, lo salto.")
+            valid = False
+            continue
+        try:
+            res = poly(*x_list)
+            r = int(res)
+        except Exception as e:
+            print(f"[!] Error al evaluar P{idx}(x): {e}")
+            valid = False
             continue
 
-        # exp_tuple
-        exps = list(exp_tuple)
-        degree = sum(exps)
-        if degree != 2:
-            continue
+        print(f"P{idx}(x) = {r}")
+        if r != 0:
+            valid = False
 
-        # Caso x_i^2 
-        if 2 in exps:
-            for idx, e in enumerate(exps):
-                if e == 2:
-                    mat[idx, idx] += 1
-                    break
-        else:
-            
-            idxs = [i for i, e in enumerate(exps) if e == 1]
-            i, j = idxs
-            mat[i, j] += 1
-            mat[j, i] += 1
-
-    return mat
-
-def extract_all_matrices(polys):
-    if not polys:
-        return []
-    num_vars = polys[0].parent().ngens()
-    return [poly_to_matrix(p, num_vars) for p in polys]
+    return valid
 
 if __name__ == "__main__":
+    print("[*] Cargando polinomios centrales...")
     polys = load_public_polys()
     if not polys:
-        exit(1)
+        sys.exit("[-] No hay polinomios para verificar.")
 
-    matrices = extract_all_matrices(polys)
-    for i, mat in enumerate(matrices, start=1):
-        print(f"\nMatriz {i}:")
-        print(mat.str())
+    print("[*] Cargando firma falsificada...")
+    x = load_forged_signature()
+
+    print("[*] Verificando firma contra los polinomios...")
+    if verify_signature(polys, x):
+        print("\n ¡Firma VÁLIDA! Has roto el esquema.")
+    else:
+        print("\n Firma NO válida.")
