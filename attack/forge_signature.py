@@ -4,7 +4,7 @@ import sys, os, pickle
 from itertools import product
 from sage.all import GF
 
-# 1) Aseguramos ruta raíz
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"[✔] Firma falsificada encontrada: {x}")
-    # Guardamos la firma
+    
     forged_dir = os.path.join(ROOT, "keys", "forged")
     os.makedirs(forged_dir, exist_ok=True)
     path = os.path.join(forged_dir, "forged_signature.pkl")
