@@ -78,16 +78,16 @@ def minrank_attack(matrices):
 
 def main():
     os.makedirs("keys", exist_ok=True)
-    # 1) Generar y guardar la “clave pública”
+    
     polys = gen_central_polys()
     with open("keys/rainbow_public_key.pkl", "wb") as f:
         pickle.dump(polys, f)
 
-    # 2) Extraer matrices y llamar al stub de minrank_attack
+    
     mats = polynomials_to_matrices(polys)
     coeffs, combined = minrank_attack(mats)
 
-    # 3) Guardar la solución MinRank para el siguiente paso
+    
     os.makedirs("attack/output", exist_ok=True)
     with open("attack/output/minrank_solution.pkl", "wb") as f:
         pickle.dump({"coeffs": coeffs, "matrix": combined}, f)
