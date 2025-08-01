@@ -92,7 +92,7 @@ def main():
     with open("attack/output/minrank_solution.pkl", "wb") as f:
         pickle.dump({"coeffs": coeffs, "matrix": combined}, f)
 
-    print(f"✅ Instancia rota con coeficientes {coeffs} y rango {combined.rank()}")
+    print(f" Instancia rota con coeficientes {coeffs} y rango {combined.rank()}")
 
 if __name__ == "__main__":
     main()
